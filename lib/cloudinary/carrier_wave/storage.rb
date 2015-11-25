@@ -33,6 +33,7 @@ class Cloudinary::CarrierWave::Storage < ::CarrierWave::Storage::Abstract
       eager_versions = uploader.versions.values.select(&:eager)
       params[:eager] = eager_versions.map{|version| [version.transformation, version.format]} if eager_versions.length > 0
       params[:type]=uploader.class.storage_type
+      params[:folder] = uploader.store_dir if uploader.is_a?(CarrierWave::Uploader::Base) && uploader.store_dir.present?
 
       params[:resource_type] ||= :auto
       uploader.metadata = Cloudinary::Uploader.upload(data, params)
